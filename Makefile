@@ -30,7 +30,7 @@ CFLAGS = -Wall -Wextra -Werror -I includes/ -I libft/includes/
 # Folders & files
 LIBFT = -L libft -lft
 HEADER = minishell.h
-BUILTINS = cd echo env exit export pwd unset
+BUILTINS = cd echo env exit export pwd unset export_utils
 ENV = env get_env sort_env shlvl
 EXEC = bin builtin exec
 MAIN = minishell redir signal

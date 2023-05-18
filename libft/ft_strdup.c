@@ -6,7 +6,7 @@
 /*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 16:40:42 by tgomes-l          #+#    #+#             */
-/*   Updated: 2023/05/17 23:50:43 by tgomes-l         ###   ########.fr       */
+/*   Updated: 2023/05/18 03:25:14 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ char	*ft_strdup(const char *s1)
 	char	*dst;
 
 	i = 0;
-	dst = malloc(sizeof(char) * (i + 1));
 	if (!(s1))
 		return (NULL);
 	while (s1[i] != '\0')
 		i++;
+	dst = malloc(sizeof(char) * (i + 1));
 	if (!dst)
 		return (NULL);
 	i = 0;

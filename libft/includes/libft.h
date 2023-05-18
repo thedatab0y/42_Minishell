@@ -6,7 +6,7 @@
 /*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 15:08:11 by tgomes-l          #+#    #+#             */
-/*   Updated: 2023/05/17 23:14:21 by tgomes-l         ###   ########.fr       */
+/*   Updated: 2023/05/18 03:22:08 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void			*ft_memcpy(void *dst, const void *src, size_t n);
 void			*ft_memdel(void *ptr);
 void			*ft_memmove(void *dst, const void *src, size_t len);
 void			*ft_memset(void *b, int c, size_t len);
+int				ft_nbrlen(long n);
 void			ft_putchar(char c);
 void			ft_putchar_fd(char c, int fd);
 void			ft_putendl(char *s);
@@ -52,6 +53,7 @@ void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
 void			ft_putstr(char *s);
 void			ft_putstr_fd(char *s, int fd);
+int				ft_power(int nbr, int pow);
 void			ft_skip_space(const char *str, int *i);
 void			ft_skip_spacenl(const char *str, int *i);
 char			**ft_split(char *s, char c);

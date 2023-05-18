@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_nbrlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 22:45:42 by tgomes-l          #+#    #+#             */
-/*   Updated: 2023/05/18 03:21:34 by tgomes-l         ###   ########.fr       */
+/*   Created: 2023/05/18 03:01:28 by tgomes-l          #+#    #+#             */
+/*   Updated: 2023/05/18 03:25:52 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/libft.h"
 
-// Counts the number of elements in a list.
-int	ft_lstsize(t_list *lst)
+int	ft_nbrlen(long n)
 {
-	int		count;
+	int		size;
 
-	count = 0;
-	while (lst)
+	size = 0;
+	if (n == 0)
+		return (1);
+	if (n < 0)
+		size++;
+	while (n != 0)
 	{
-		lst = lst->next;
-		count++;
+		n = n / 10;
+		size++;
 	}
-	return (count);
+	return (size);
 }

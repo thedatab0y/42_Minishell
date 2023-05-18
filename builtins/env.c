@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 22:45:42 by tgomes-l          #+#    #+#             */
-/*   Updated: 2023/05/18 03:21:34 by tgomes-l         ###   ########.fr       */
+/*   Created: 2023/04/28 12:39:37 by tgomes-l          #+#    #+#             */
+/*   Updated: 2023/05/18 12:39:59 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/libft.h"
+#include "minishell.h"
 
-// Counts the number of elements in a list.
-int	ft_lstsize(t_list *lst)
+int	ft_env(t_env *env)
 {
-	int		count;
-
-	count = 0;
-	while (lst)
+	while (env && env->next != NULL)
 	{
-		lst = lst->next;
-		count++;
+		ft_putendl(env->value);
+		env = env->next;
 	}
-	return (count);
+	if (env)
+		ft_putendl(env->value);
+	return (SUCCESS);
 }

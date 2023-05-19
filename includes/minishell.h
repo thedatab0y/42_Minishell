@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: busmanov <busmanov@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 19:41:53 by cclaude           #+#    #+#             */
-/*   Updated: 2023/05/18 17:46:45 by tgomes-l         ###   ########.fr       */
+/*   Updated: 2023/05/19 12:40:54 by busmanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,11 @@ void			mini_exit(t_mini *mini, char **cmd);
 /*
 ** PARSING
 */
+int				print_err(t_mini *mini, t_token *token, char *err_msg);
 void			parse(t_mini *mini);
 t_token			*get_tokens(char *line);
 void			squish_args(t_mini *mini);
+void			squish_token(t_mini *mini, t_token *token, t_token *prev);
 int				is_last_valid_arg(t_token *token);
 int				quotes(char *line, int index);
 void			type_arg(t_token *token, int separator);

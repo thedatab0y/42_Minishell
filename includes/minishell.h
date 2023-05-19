@@ -6,7 +6,7 @@
 /*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 19:41:53 by cclaude           #+#    #+#             */
-/*   Updated: 2023/05/19 16:45:39 by tgomes-l         ###   ########.fr       */
+/*   Updated: 2023/05/19 17:37:14 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct	s_env
 	struct s_env	*next;
 }				t_env;
 
-typedef struct History History;
+typedef struct history history;
 
 typedef struct	s_mini
 {
@@ -83,7 +83,7 @@ typedef struct	s_mini
 	int				ret;
 	int				exit;
 	int				no_exec;
-	History			*history;
+	history			*history;
 }				t_mini;
 
 typedef struct	s_sig
@@ -101,23 +101,23 @@ typedef struct	s_expansions
 	int				j;
 }				t_expansions;
 
-typedef struct	HistoryEntry {
+typedef struct	historyEntry {
 	char			*command;
-	struct HistoryEntry	*next;
-}				HistoryEntry;
+	struct historyEntry	*next;
+}				historyEntry;
 
-typedef struct	History {
-	HistoryEntry	*head;
+typedef struct	history {
+	historyEntry	*head;
 	int				size;
-}				History;
+}				history;
 
 /*
 ** HISTORY
 */
-History			*history_init();
-void			history_add(History *h, const char *command);
-char			*history_get(History *h, int index);
-void			history_delete(History *h);
+history			*history_init();
+void			history_add(history *h, const char *command);
+char			*history_get(history *h, int index);
+void			history_delete(history *h);
 
 /*
 ** MINISHELL

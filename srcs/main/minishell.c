@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: busmanov <busmanov@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:34:07 by busmanov          #+#    #+#             */
-/*   Updated: 2023/05/18 10:34:08 by busmanov         ###   ########.fr       */
+/*   Updated: 2023/05/19 16:13:42 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	main(int ac, char **av, char **env)
 	mini.exit = 0;
 	mini.ret = 0;
 	mini.no_exec = 0;
+	mini.history = history_init();
 	reset_fds(&mini);
 	env_init(&mini, env);
 	secret_env_init(&mini, env);
@@ -104,5 +105,6 @@ int	main(int ac, char **av, char **env)
 	}
 	free_env(mini.env);
 	free_env(mini.secret_env);
+	history_delete(mini.history);
 	return (mini.ret);
 }

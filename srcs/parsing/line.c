@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   line.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: busmanov <busmanov@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:38:03 by busmanov          #+#    #+#             */
-/*   Updated: 2023/05/18 10:38:30 by busmanov         ###   ########.fr       */
+/*   Updated: 2023/05/19 16:13:14 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	parse(t_mini *mini)
 	if (line && line[0] == '$')
 		line[0] = (char)(-line[0]);
 	mini->start = get_tokens(line);
+	history_add(mini->history, line);
 	ft_memdel(line);
 	squish_args(mini);
 	token = mini->start;

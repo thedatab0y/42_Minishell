@@ -30,12 +30,12 @@ CFLAGS = -Wall -Wextra -Werror -I includes/ -I libft/includes/
 # Folders & files
 LIBFT = -L libft -lft
 HEADER = minishell.h
-BUILTINS = cd echo env exit export pwd unset export_utils
+BUILTINS = cd echo env exit export pwd unset export_utils history
 ENV = env get_env sort_env shlvl
 EXEC = bin builtin exec
 MAIN = minishell redir signal
 PARSING = line tokens expansions
-TOOLS = fd free token type expansions parsing
+TOOLS = fd free token type expansions parsing history
 
 # Source files
 SRC = $(addsuffix .c, $(addprefix srcs/builtins/, $(BUILTINS))) \

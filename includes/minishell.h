@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: busmanov <busmanov@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/20 19:41:53 by cclaude           #+#    #+#             */
-/*   Updated: 2023/05/19 12:40:54 by busmanov         ###   ########.fr       */
+/*   Updated: 2023/05/19 16:45:39 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <limits.h>
 # include <errno.h>
 # include <signal.h>
+# include <string.h>
 
 # define EMPTY 0
 # define CMD 1
@@ -62,6 +63,8 @@ typedef struct	s_env
 	struct s_env	*next;
 }				t_env;
 
+typedef struct History History;
+
 typedef struct	s_mini
 {
 	t_token			*start;
@@ -80,6 +83,7 @@ typedef struct	s_mini
 	int				ret;
 	int				exit;
 	int				no_exec;
+	History			*history;
 }				t_mini;
 
 typedef struct	s_sig
@@ -96,6 +100,24 @@ typedef struct	s_expansions
 	int				i;
 	int				j;
 }				t_expansions;
+
+typedef struct	HistoryEntry {
+	char			*command;
+	struct HistoryEntry	*next;
+}				HistoryEntry;
+
+typedef struct	History {
+	HistoryEntry	*head;
+	int				size;
+}				History;
+
+/*
+** HISTORY
+*/
+History			*history_init();
+void			history_add(History *h, const char *command);
+char			*history_get(History *h, int index);
+void			history_delete(History *h);
 
 /*
 ** MINISHELL
@@ -129,6 +151,7 @@ char			*get_env_name(char *dest, const char *src);
 int				is_in_env(t_env *env, char *args);
 int				ft_unset(char **args, t_mini *mini);
 void			mini_exit(t_mini *mini, char **cmd);
+int				ft_history(t_mini *mini);
 /*
 ** PARSING
 */

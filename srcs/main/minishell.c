@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: busmanov <busmanov@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 10:34:07 by busmanov          #+#    #+#             */
-/*   Updated: 2023/05/19 16:13:42 by tgomes-l         ###   ########.fr       */
+/*   Created: 2023/04/15 10:34:07 by busmanov          #+#    #+#             */
+/*   Updated: 2023/05/19 20:04:31 by busmanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,22 +79,27 @@ void	minishell(t_mini *mini)
 	}
 }
 
+void	initialize_mini(t_mini *mini, char **env)
+{
+	mini->in = dup(STDIN);
+	mini->out = dup(STDOUT);
+	mini->exit = 0;
+	mini->ret = 0;
+	mini->no_exec = 0;
+	mini->history = history_init();
+	reset_fds(mini);
+	env_init(mini, env);
+	secret_env_init(mini, env);
+	increment_shell_level(mini->env);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_mini	mini;
 
 	(void)ac;
 	(void)av;
-	mini.in = dup(STDIN);
-	mini.out = dup(STDOUT);
-	mini.exit = 0;
-	mini.ret = 0;
-	mini.no_exec = 0;
-	mini.history = history_init();
-	reset_fds(&mini);
-	env_init(&mini, env);
-	secret_env_init(&mini, env);
-	increment_shell_level(mini.env);
+	initialize_mini(&mini, env);
 	while (mini.exit == 0)
 	{
 		sig_init();

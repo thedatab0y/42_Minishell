@@ -3,16 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: busmanov <busmanov@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/06/08 19:33:30 by macrespo          #+#    #+#             */
-/*   Updated: 2023/05/19 16:44:59 by tgomes-l         ###   ########.fr       */
+/*   Created: 2023/05/19 18:29:47 by busmanov          #+#    #+#             */
+/*   Updated: 2023/05/19 19:23:04 by busmanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		is_builtin(char *command)
+int	error_message(char *path)
+{
+	DIR	*folder;
+	int	fd;
+	int	ret;
+
+	fd = open(path, O_WRONLY);
+	folder = opendir(path);
+	ft_putstr_fd("minishell: ", STDERR);
+	ft_putstr_fd(path, STDERR);
+	if (ft_strchr(path, '/') == NULL)
+		ft_putendl_fd(": command not found", STDERR);
+	else if (fd == -1 && folder == NULL)
+		ft_putendl_fd(": No such file or directory", STDERR);
+	else if (fd == -1 && folder != NULL)
+		ft_putendl_fd(": is a directory", STDERR);
+	else if (fd != -1 && folder == NULL)
+		ft_putendl_fd(": Permission denied", STDERR);
+	if (ft_strchr(path, '/') == NULL || (fd == -1 && folder == NULL))
+		ret = UNKNOWN_COMMAND;
+	else
+		ret = IS_DIRECTORY;
+	if (folder)
+		closedir(folder);
+	ft_close(fd);
+	return (ret);
+}
+
+int	is_builtin(char *command)
 {
 	if (ft_strcmp(command, "echo") == 0)
 		return (1);
@@ -31,7 +59,7 @@ int		is_builtin(char *command)
 	return (0);
 }
 
-int		exec_builtin(char **args, t_mini *mini)
+int	exec_builtin(char **args, t_mini *mini)
 {
 	int		result;
 

@@ -6,31 +6,11 @@
 /*   By: busmanov <busmanov@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 10:38:42 by busmanov          #+#    #+#             */
-/*   Updated: 2023/05/18 11:28:03 by busmanov         ###   ########.fr       */
+/*   Updated: 2023/05/19 19:47:07 by busmanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	type_arg(t_token *token, int separator)
-{
-	if (ft_strcmp(token->str, "") == 0)
-		token->type = EMPTY;
-	else if (ft_strcmp(token->str, ">") == 0 && separator == 0)
-		token->type = TRUNC;
-	else if (ft_strcmp(token->str, ">>") == 0 && separator == 0)
-		token->type = APPEND;
-	else if (ft_strcmp(token->str, "<") == 0 && separator == 0)
-		token->type = INPUT;
-	else if (ft_strcmp(token->str, "|") == 0 && separator == 0)
-		token->type = PIPE;
-	else if (ft_strcmp(token->str, ";") == 0 && separator == 0)
-		token->type = END;
-	else if (token->prev == NULL || token->prev->type >= TRUNC)
-		token->type = CMD;
-	else
-		token->type = ARG;
-}
 
 void	squish_args(t_mini *mini)
 {
@@ -78,30 +58,45 @@ int	next_alloc(char *line, int *i)
 	return (j - count + 1);
 }
 
-t_token	*next_token(char *line, int *i)
+t_token	*allocate_token(char *line, int *i)
 {
 	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->str = malloc(sizeof(char) * next_alloc(line, i));
+	if (!token->str)
+	{
+		free(token);
+		return (NULL);
+	}
+	return (token);
+}
+
+t_token	*next_token(char *line, int *i)
+{
 	int		j;
 	char	c;
+	t_token	*token;
 
 	j = 0;
 	c = ' ';
-	if (!(token = malloc(sizeof(t_token)))
-		|| !(token->str = malloc(sizeof(char) * next_alloc(line, i))))
+	token = allocate_token(line, i);
+	if (!token)
 		return (NULL);
 	while (line[*i] && (line[*i] != ' ' || c != ' '))
 	{
 		if (c == ' ' && (line[*i] == '\'' || line[*i] == '\"'))
 			c = line[(*i)++];
 		else if (c != ' ' && line[*i] == c)
-		{
 			c = ' ';
-			(*i)++;
-		}
-		else if (line[*i] == '\\' && (*i)++)
-			token->str[j++] = line[(*i)++];
+		else if (line[*i] == '\\')
+			token->str[j++] = line[++(*i)];
 		else
-			token->str[j++] = line[(*i)++];
+			token->str[j++] = line[*i];
+		if (c == line[*i] || line[*i] != '\\')
+			(*i)++;
 	}
 	token->str[j] = '\0';
 	return (token);

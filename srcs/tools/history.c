@@ -3,41 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
+/*   By: busmanov <busmanov@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/19 15:41:59 by tgomes-l          #+#    #+#             */
-/*   Updated: 2023/05/19 17:36:17 by tgomes-l         ###   ########.fr       */
+/*   Updated: 2023/05/19 18:34:34 by busmanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-history	*history_init(void)
+t_history	*history_init(void)
 {
-	history *h = (history *)malloc(sizeof(history));
+	t_history	*h;
+
+	h = (t_history *)malloc(sizeof(t_history));
 	h->head = NULL;
 	h->size = 0;
 	return (h);
 }
 
-void history_add(history *h, const char *command)
+void	history_add(t_history *h, const char *command)
 {
-	historyEntry *entry = (historyEntry *)malloc(sizeof(historyEntry));
+	t_historyEntry	*entry;
+
+	entry = (t_historyEntry *)malloc(sizeof(t_historyEntry));
 	entry->command = strdup(command);
 	entry->next = h->head;
 	h->head = entry;
 	h->size++;
 }
 
-char	*history_get(history *h, int index)
+char	*history_get(t_history *h, int index)
 {
-	int i;
-	
+	int				i;
+	t_historyEntry	*current;
+
+	i = 0;
+	current = h->head;
 	if (index >= h->size)
 		return (NULL);
-	historyEntry *current = h->head;
-    i = 0;
-    while (i < index)
+	while (i < index)
 	{
 		current = current->next;
 		i++;
@@ -45,11 +50,12 @@ char	*history_get(history *h, int index)
 	return (current->command);
 }
 
-void	history_delete(history *h)
+void	history_delete(t_history *h)
 {
-	historyEntry *current = h->head;
-	historyEntry *next;
+	t_historyEntry	*current;
+	t_historyEntry	*next;
 
+	current = h->head;
 	while (current != NULL)
 	{
 		next = current->next;

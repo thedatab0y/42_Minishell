@@ -3,38 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cclaude <cclaude@student.42.fr>            +#+  +:+       +#+        */
+/*   By: busmanov <busmanov@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/17 15:42:31 by cclaude           #+#    #+#             */
-/*   Updated: 2020/08/25 14:55:20 by cclaude          ###   ########.fr       */
+/*   Updated: 2023/05/19 18:42:40 by busmanov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**cmd_tab(t_token *start)
+int	count_tokens(t_token *start)
 {
-	t_token	*token;
-	char	**tab;
 	int		i;
+	t_token	*token;
 
-	if (!start)
-		return (NULL);
-	token = start->next;
 	i = 2;
+	token = start->next;
 	while (token && token->type < TRUNC)
 	{
 		token = token->next;
 		i++;
 	}
-	if (!(tab = malloc(sizeof(char *) * i)))
+	return (i);
+}
+
+char	**cmd_tab(t_token *start)
+{
+	int			i;
+	int			len;
+	char		**tab;
+	t_token		*token;
+
+	if (!start)
+		return (NULL);
+	len = count_tokens(start);
+	tab = malloc(sizeof(char *) * len);
+	if (!tab)
 		return (NULL);
 	token = start->next;
 	tab[0] = start->str;
 	i = 1;
 	while (token && token->type < TRUNC)
 	{
-		tab[i++] = token->str;
+		tab[i] = token->str;
+		i++;
 		token = token->next;
 	}
 	tab[i] = NULL;

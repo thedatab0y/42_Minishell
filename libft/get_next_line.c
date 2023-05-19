@@ -6,82 +6,130 @@
 /*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 13:57:36 by tgomes-l          #+#    #+#             */
-/*   Updated: 2023/05/18 03:12:04 by tgomes-l         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:21:36 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/libft.h"
 
-static char	*ft_read_it(char **buffer, int fd)
+int	newline_check(char *stock, int read_size)
 {
-	int		byte_count;
-	char	*temp;
-	char	*ptr;
+	int	i;
 
-	byte_count = 1;
-	temp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!temp)
-		return (NULL);
-	while (!(ft_strchr(*buffer, '\n')) && byte_count > 0)
-	{
-		byte_count = read(fd, temp, BUFFER_SIZE);
-		if (byte_count)
-		{
-			temp[byte_count] = '\0';
-			ptr = *buffer;
-			*buffer = ft_strjoin(*buffer, (char *)temp);
-			free(ptr);
-		}
-	}
-	free(temp);
-	temp = NULL;
-	return (*buffer);
-}
-
-static int	ft_what_is_read(char **buffer, char **line)
-{
-	char	*p;
-	char	*mem;
-
-	p = NULL;
-	if (ft_strchr(*buffer, '\n') == 0)
-	{
-		*line = ft_strdup(*buffer);
-		free(*buffer);
-		*buffer = NULL;
+	i = 0;
+	if (read_size == 0 && stock[0] == '\0')
+		return (2);
+	if (read_size == 0 || stock == NULL)
 		return (0);
-	}
-	else if (ft_strchr(*buffer, '\n') != 0)
+	while (stock[i] != '\0')
 	{
-		mem = ft_strchr(*buffer, '\n');
-		*line = malloc(sizeof(char) * (mem - *buffer + 1));
-		if (!(*line))
-			return (-1);
-		*line = ft_strncpy(*line, *buffer, (mem - *buffer));
-		p = *buffer;
-		*buffer = ft_strdup(mem + 1);
-		free(p);
-		return (1);
+		if (stock[i] == '\n')
+			return (1);
+		i++;
 	}
 	return (0);
 }
 
+char	*buf_join(char *stock, char *buf)
+{
+	int		i;
+	int		j;
+	char	*new;
+
+	i = 0;
+	j = 0;
+	while (stock != NULL && stock[i] != '\0')
+		i++;
+	while (buf[j] != '\0')
+		j++;
+	new = malloc(sizeof(char) * (i + j + 1));
+	if (!new)
+		return (ft_memdel(stock));
+	i = 0;
+	j = 0;
+	while (stock != NULL && stock[i] != '\0')
+		new[i++] = stock[j++];
+	j = 0;
+	while (buf[j] != '\0')
+		new[i++] = buf[j++];
+	new[i] = '\0';
+	if (stock != NULL)
+		ft_memdel(stock);
+	return (new);
+}
+
+char	*stock_trim(char *stock)
+{
+	int		i;
+	int		j;
+	char	*trimmed;
+
+	i = 0;
+	j = 0;
+	while (stock[i] != '\n' && stock[i] != '\0')
+		i++;
+	while (stock[i++] != '\0')
+		j++;
+	trimmed = malloc(sizeof(char) * j + 1);
+	if (!trimmed)
+		return (ft_memdel(stock));
+	i = 0;
+	j = 0;
+	while (stock[i] != '\n' && stock[i] != '\0')
+		i++;
+	if (stock[i] == '\0')
+		i--;
+	i++;
+	while (stock[i] != '\0')
+		trimmed[j++] = stock[i++];
+	trimmed[j] = '\0';
+	ft_memdel(stock);
+	return (trimmed);
+}
+
+char	*get_line(char *stock)
+{
+	int		i;
+	char	*line;
+
+	i = 0;
+	while (stock[i] != '\n' && stock[i] != '\0')
+		i++;
+	line = malloc(sizeof(char) * i + 1);
+	if (!line)
+		return (ft_memdel(stock));
+	i = 0;
+	while (stock[i] != '\n' && stock[i] != '\0')
+	{
+		line[i] = stock[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
+}
+
 int	get_next_line(int fd, char **line)
 {
-	static char	*buffer;
+	static char	*stock = NULL;
+	int			read_len;
 
-	buffer = NULL;
-	if (line == NULL || fd < 0 || read(fd, buffer, 0) < 0 || BUFFER_SIZE < 0)
+	if (line == NULL || fd < 0 || BUFFER_SIZE < 1 || (read(fd, NULL, 0)) < 0)
 		return (-1);
-	if (!buffer)
-		buffer = ft_strdup("");
-	if (!buffer)
+	read_len = read_from_file(fd, &stock);
+	if (read_len == -1)
 		return (-1);
-	if (BUFFER_SIZE == 0)
-	{
-		*line = NULL;
+	*line = stock;
+	if (newline_check(stock, read_len) == 2 && *line)
+		return (-2);
+	*line = get_line(stock);
+	if (*line == NULL)
+		return (-1);
+	stock = stock_trim(stock);
+	if (stock)
+		return (-1);
+	ft_memdel(stock);
+	if (read_len != 0)
+		return (1);
+	else
 		return (0);
-	}
-	buffer = ft_read_it(&buffer, fd);
-	return (ft_what_is_read(&buffer, line));
 }

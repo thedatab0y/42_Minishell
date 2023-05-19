@@ -6,7 +6,7 @@
 /*   By: tgomes-l <tgomes-l@student.42wolfsburg.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 15:08:11 by tgomes-l          #+#    #+#             */
-/*   Updated: 2023/05/18 03:22:08 by tgomes-l         ###   ########.fr       */
+/*   Updated: 2023/05/19 15:25:01 by tgomes-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ int				ft_atoi(const char *str);
 void			ft_bzero(void *s, size_t n);
 void			*ft_calloc(size_t count, size_t size);
 int				get_next_line(int fd, char **line);
+int				read_from_file(int fd, char **stock);
+char			*buf_join(char *stock, char *buf);
+int				newline_check(char *stock, int read_size);
 int				ft_isalnum(int x);
 int				ft_isalpha(int x);
 int				ft_isascii(int x);
@@ -66,7 +69,7 @@ unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size);
 char			*ft_strncpy(char *dst, char *src, int n);
 size_t			ft_strlen(const char *str);
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-int				ft_strcmp(char *s1, char *s2);
+int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 char			*ft_strnstr(const char *bg, const char *sm, size_t len);
 char			*ft_strrchr(char *s, int c);
